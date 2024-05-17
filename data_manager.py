@@ -27,6 +27,38 @@ class data_manager:
                 continue
             try:
                 df = pd.read_csv(f"data/{current_league}/{filename}")
+                #rename columns
+                rename_dict = {
+                    "HomeTeam" : "Home Team",
+                    "AwayTeam" : "Away Team",
+                    "Date" : "Match Date",
+                    "Div" : "League Division",
+                    "Time" : "Time of kick off",
+                    "FTHG" : "Full Time Home Team Goals",
+                    "HG" : "Full Time Home Team Goals",
+                    "FTAG" : "Full Time Away Team Goals",
+                    "AG" : "Full Time Away Team Goals",
+                    "FTR" : "Full Time Result (H= Home Win, D=Draw, A=Away Win)",
+                    "Res" : "Full Time Result (H= Home Win, D=Draw, A=Away Win)",
+                    "HTHG" : "Half Time Home Team Goals",
+                    "HTAG" : "Half Time Home Team Goals",
+                    "HTR" : "Half Time Result(H= Home Win, D=Draw, A=Away Win)",
+                    "Referee" : "Match Referee",
+                    "HS" : "Home Team Shots",
+                    "AS" : "Away Team Shots",
+                    "HST" : "Home Team Shots on Target",
+                    "AST" : "Away Team Shots on Target",
+                    "HF" : "Home Team Fouls Committed",
+                    "AF" : "Away Team Fouls Committed",
+                    "HC" : "Home Team Corners",
+                    "AC" : "Away Team Corners",
+                    "HY" : "Home Team Yellow Cards",
+                    "AY" : "Away Team Yellow Cards",
+                    "HR" : "Home Team Red Cards",
+                    "AR" : "Away Team Red Cards",
+                }
+                df.rename(columns=rename_dict, inplace=True)
+                
             except Exception as e:
                 print(f"Error with file {filename}: {e}")
             list_of_df.append(df)
