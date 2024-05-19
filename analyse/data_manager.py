@@ -103,13 +103,13 @@ def get_data_with_columns(teams: [str]) -> pd.DataFrame:
 
         # Define columns to keep for each team type (home and away)
         data_to_keep = {
-            "HomeTeam": ['FTHG', 'HTHG', 'HST', 'HS', 'HF', 'HC', 'HY', 'HR'],
-            "AwayTeam": ['FTAG', 'HTAG', 'AST', 'AS', 'AF', 'AC', 'AY', 'AR']
+            "HomeTeam": ['FTHG', 'HTHG', 'HST', 'HS', 'HF', 'HC', 'HY', 'HR', 'FTR'],
+            "AwayTeam": ['FTAG', 'HTAG', 'AST', 'AS', 'AF', 'AC', 'AY', 'AR' 'FTR']
         }
 
         # Define new column names
         new_names = ['Full Time Goals', 'Half Time Goals', 'Shots on Target', 'Shots',
-                     'Fouls Committed', 'Corners', 'Yellow Cards', 'Red Cards']
+                     'Fouls Committed', 'Corners', 'Yellow Cards', 'Red Cards', 'Result']
 
         # List to store DataFrames for each team
         team_dfs = []
