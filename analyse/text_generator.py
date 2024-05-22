@@ -205,3 +205,81 @@ def plot_shot_accuracy(team1, team2, home_accuracy, away_accuracy):
 #     plt.figure(figsize=(10, 8))
 #     sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
 #     plt.title('Correlation Matrix')
+
+
+
+##################### DUMMY PLOTS ########################
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import numpy as np
+
+def plot_correlation_heatmap(correlation_matrix):
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+    plt.title('Correlation Matrix')
+    plt.savefig('correlation_heatmap.png')
+    plt.show()
+
+# Example usage with dummy data
+# Create a sample correlation matrix for demonstration
+np.random.seed(0)
+data = np.random.rand(10, 10)
+correlation_matrix = pd.DataFrame(data, columns=['HF', 'AF', 'HC', 'AC', 'HS', 'AS', 'HY', 'AY', 'HR', 'AR']).corr()
+
+new_labels = ['Home Fouls', 'Away Fouls', 'Home Corners', 'Away Corners', 'Home Shots', 'Away Shots',
+              'Home Yellow', 'Away Yellow', 'HomeRed', 'AwayRed']
+correlation_matrix.columns = new_labels
+correlation_matrix.index = new_labels
+
+plot_correlation_heatmap(correlation_matrix)
+
+
+def plot_overall_stats(team1, team2, team1_wins, team2_wins, draws):
+    # Data for the pie plot
+    labels = [f'{team1} Wins', 'Draws', f'{team2} Wins']
+    sizes = [team1_wins, draws, team2_wins]
+    colors = ['#ff9999', '#66b3ff', '#99ff99']
+
+    fig1, ax1 = plt.subplots()
+    ax1.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%',
+            shadow=True, startangle=90)
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+    plt.title('Overall Statistics')
+    plt.savefig('overall.png')
+    plt.show()
+
+# Example usage with dummy data
+team1 = 'Arsenal'
+team2 = 'Chelsea'
+team1_wins = 10
+team2_wins = 4
+draws = 2
+
+plot_overall_stats(team1, team2, team1_wins, team2_wins, draws)
+
+def plot_shot_accuracy(team1, team2, home_accuracy, away_accuracy):
+    labels = [team1, team2]
+    accuracies = [home_accuracy, away_accuracy]
+
+    plt.figure(figsize=(8, 6))
+    plt.bar(labels, accuracies, color=['blue', 'red'])
+    plt.xlabel('Teams')
+    plt.ylabel('Shot Accuracy (%)')
+    plt.title('Percentage of Shots on Target')
+    plt.ylim(0, 100)
+
+    for i in range(len(accuracies)):
+        plt.text(i, accuracies[i] + 1, f'{accuracies[i]:.2f}%', ha='center', va='bottom')
+
+    plt.savefig('shot_accuracy.png')
+    plt.show()
+
+# Example usage with dummy data
+team1 = 'Arsenal'
+team2 = 'Chelsea'
+home_accuracy = 76.12
+away_accuracy = 82.98
+
+plot_shot_accuracy(team1, team2, home_accuracy, away_accuracy)
