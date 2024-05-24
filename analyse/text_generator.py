@@ -125,7 +125,8 @@ class GenerateText:
 
     def win_percentage_when_leading_at_half(self, home=True) -> float:
         """
-        Calculate the win percentage when leading at halftime.
+        Calculate the win percentage by which the home or away team will win the match if it is leading at halftime.
+        (Over the entire period and not just in a head-to-head comparison)
 
         Parameters:
         home (bool): True if calculating for home team, False for away team.
@@ -168,15 +169,18 @@ class GenerateText:
 
     def average_goals_per_half(self) -> None:
         """
-        Calculate the average number of goals scored in the first and second half.
+        Calculate the average number of goals scored between the two teams in the first and second half.
 
         Returns:
         None
         """
+        #Calculate the total number of goals scored in the first half
         first_half_goals = self.matches['HTHG'] + self.matches['HTAG']
+        #Calculate the total number of goals scored in the second half
         second_half_goals = (self.matches['FTHG'] - self.matches['HTHG']) + (
                 self.matches['FTAG'] - self.matches['HTAG'])
 
+        #Calculate the average number of goals for each half
         self.avg_first_half_goals = first_half_goals.mean()
         self.avg_second_half_goals = second_half_goals.mean()
 
@@ -202,3 +206,80 @@ class GenerateText:
         team1_accuracy = shot_accuracy(self.team1)
         team2_accuracy = shot_accuracy(self.team2)
         return team1_accuracy, team2_accuracy
+
+    def calculate_relevant_correlations(self):
+        """
+        Calculate the relevant correlations.
+
+        Returns:
+        DataFrame: correlation matrix
+        """
+        # Relevant metrics for the correlation
+        metrics = ['HF', 'AF', 'HC', 'AC', 'HS', 'AS', 'HY', 'AY', 'HR', 'AR']
+    
+        # Create a binary win/loss column for home and away
+        self.data['HomeWin'] = self.data['FTR'].apply(lambda x: 1 if x == 'H' else 0)
+        self.data['AwayWin'] = self.data['FTR'].apply(lambda x: 1 if x == 'A' else 0)
+    
+        # Add these win columns to the metrics
+        metrics += ['HomeWin', 'AwayWin']
+    
+        # Create the correlation matrix
+        correlation_matrix = self.data[metrics].corr()
+
+        # Rename the columns and index
+        new_labels = ['Home Fouls', 'Away Fouls', 'Home Corners', 'Away Corners', 'Home Shots', 'Away Shots',
+                      'Home Yellow', 'Away Yellow', 'Home Red', 'Away Red', 'Home Win', 'Away Win']
+        correlation_matrix.columns = new_labels
+        correlation_matrix.index = new_labels
+    
+        return correlation_matrix
+
+   ################### Plots ########################
+
+# Pie plot for overall statistics
+def plot_overall_stats(self):
+    # Data for the pie plot
+    labels = [f'{self.team1} Wins', 'Draws', f'{self.team2} Wins']
+    sizes = [self.team1_wins,self.draws, self.team2_wins]
+    colors = ['#ff9999', '#66b3ff', '#99ff99']
+
+    fig1, ax1 = plt.subplots()
+    ax1.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%',
+            shadow=True, startangle=90)
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+    plt.title('Overall Statistics')
+    plt.savefig('overall.png')
+    plt.show
+
+
+# Bar plot for shot accuracy
+def plot_shot_accuracy(self):
+    labels = [team1, team2]
+    accuracies = [self.shot_accuracy_team1, self.shot_accuracy_team2]
+
+    plt.figure(figsize=(8, 6))
+    plt.bar(labels, accuracies, color=['blue', 'red'])
+    plt.xlabel('Teams')
+    plt.ylabel('Shot Accuracy (%)')
+    plt.title('Percentage of Shots on Target')
+    plt.ylim(0, 100)
+
+    for i in range(len(accuracies)):
+        plt.text(i, accuracies[i] + 1, f'{accuracies[i]:.2f}%', ha='center', va='bottom')
+
+    plt.savefig('shot_accuracy.png')
+    plt.show()
+
+# Plot a heatmap for the correlation matrix of various match metrics including wins
+def plot_correlation_heatmap(self):
+    correlation_matrix = self.calculate_relevant_correlations()
+
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+    plt.title('Correlation Matrix')
+    plt.savefig('correlation_heatmap.png')
+    plt.show()
+
+
