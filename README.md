@@ -15,6 +15,7 @@ The program is organized into several scripts, each handling a specific part of 
 - Contributing
 - License
 - Contact
+- Disclaimer
 
 # Installation
 
