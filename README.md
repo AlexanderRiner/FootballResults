@@ -34,7 +34,7 @@ The program is organized into several scripts, each handling a specific part of 
 
 1. To start the program, run the ```run.py``` script
 2. The program will ask you to input a command
-3. to get an overview of the available commands, input ```help```
+3. To get an overview of the available commands, input ```help```
 4. Choose one of the following features:
 
 - ```analyse``` create a report with two football teams of your choice
@@ -43,7 +43,7 @@ The program is organized into several scripts, each handling a specific part of 
   preferred league)
 - ```update_data``` update all data manually
 
-5. after you analyse two teams of your choice, the program will automatically create a PDF document of the football
+5. After you analyse two teams of your choice, the program will automatically create a PDF document of the football
    statistics on your local drive
 6. You can repeat the steps if you want to analyse different teams in different leagues
 
